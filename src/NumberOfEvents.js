@@ -1,15 +1,21 @@
 import React, { Component } from "react";
 
 class NumberOfEvents extends Component {
-  state = {
-    query: 1,
-  };
+  constructor() {
+    super();
+    this.state = {
+      query: 32,
+    };
+  }
 
   handleInputChanged = (event) => {
     const value = event.target.value;
-    this.setState({
-      query: value,
-    });
+    if (value >= 1 || value <= 32) {
+      this.setState({
+        query: value,
+      });
+      this.props.updateEvents(this.props.selectedCity, value);
+    }
   };
 
   render() {
