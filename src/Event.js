@@ -14,7 +14,7 @@ class Event extends Component {
   render() {
     const { event } = this.props;
     return (
-      <div>
+      <div className='event'>
         <b className='title'>Summary: {event.summary}</b>
         {!this.hide && (
           <ul className='details'>
