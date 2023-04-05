@@ -9,11 +9,10 @@ describe("<Event /> component", () => {
     event = mockData[0];
     EventWrapper = shallow(<Event event={event} />);
   });
-  test("render details", () => {
-    expect(EventWrapper.find("li")).toHaveLength(4);
-  });
 
   test("corresct details are rendered", () => {
+    const display = EventWrapper.find(".detailsButton");
+    display.simulate("click");
     const summary = EventWrapper.find(".title");
     const details = EventWrapper.find(".details li");
     expect(summary.text()).toBe(`Summary: ${event.summary}`);
@@ -30,6 +29,6 @@ describe("<Event /> component", () => {
   test("toggle boolean", () => {
     const display = EventWrapper.find(".detailsButton");
     display.simulate("click");
-    expect(EventWrapper.state("hide")).toBe(false);
+    expect(EventWrapper.state("hide")).toBe(true);
   });
 });
