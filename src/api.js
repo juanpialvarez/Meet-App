@@ -42,6 +42,7 @@ export const getEvents = async () => {
   if (!navigator.onLine) {
     const data = localStorage.getItem("lastEvents");
     NProgress.done();
+    console.log(navigator.onLine);
     return data ? JSON.parse(data).events : [];
   }
 
