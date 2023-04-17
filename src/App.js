@@ -5,6 +5,7 @@ import EventList from "./EventList";
 import NumberOfEvents from "./NumberOfEvents";
 import { getEvents, extractLocations } from "./api";
 import "./nprogress.css";
+import { ErrorAlert } from "./Alert";
 
 class App extends Component {
   state = {
@@ -84,6 +85,7 @@ class App extends Component {
   render() {
     return (
       <div className='App'>
+        {navigator.onLine && <ErrorAlert text='The app is using cached data' />}
         <br />
         <br />
         <CitySearch
