@@ -48,13 +48,16 @@
   height: 18px;
 }
 .btn-text {
-  float: right;
+  position: relative;
+  top: 0;
   color: #fff;
   font-size: 14px;
   letter-spacing: 0.2px;
   font-family: "Roboto";
   background-color: #4285f4;
+  border: none;
   width: 80%;
   height: 100%;
+  transform: translate(15px, -11px);
   text-align: center;
 }
