@@ -85,7 +85,9 @@ class App extends Component {
   render() {
     return (
       <div className='App'>
-        {navigator.onLine && <ErrorAlert text='The app is using cached data' />}
+        {!navigator.onLine && (
+          <ErrorAlert text='The app is using cached data' />
+        )}
         <br />
         <br />
         <CitySearch
