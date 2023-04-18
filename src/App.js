@@ -15,7 +15,7 @@ import {
   Legend,
   Scatter,
   Tooltip,
-  ResponsiveContainer,
+  // ResponsiveContainer,
 } from "recharts";
 
 class App extends Component {
