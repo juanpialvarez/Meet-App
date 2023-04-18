@@ -58,7 +58,6 @@ export const getEvents = async () => {
       var locations = extractLocations(result.data.events);
       localStorage.setItem("lastEvents", JSON.stringify(result.data));
       localStorage.setItem("locations", JSON.stringify(locations));
-      localStorage.setItem("userLogedIn", "true");
     }
     NProgress.done();
     return result.data.events;

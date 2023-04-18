@@ -14,14 +14,12 @@ class App extends Component {
     locations: [],
     eventCount: 32,
     selectedCity: null,
-    showWelcomeScreen: undefined,
+    // showWelcomeScreen: undefined
   };
 
   async componentDidMount() {
     this.mounted = true;
-    const userLogedIn = localStorage.getItem("userLogedIn");
-    this.setState({ showWelcomeScreen: userLogedIn === "true" });
-    if (userLogedIn && this.mounted) {
+    if (this.mounted) {
       getEvents().then((events) => {
         const shownEvents = events.slice(0, this.state.eventCount);
         if (this.mounted) {
@@ -89,8 +87,8 @@ class App extends Component {
   };
 
   render() {
-    if (this.state.showWelcomeScreen === undefined)
-      return <div className='App'>Please log in</div>;
+    // if (this.state.showWelcomeScreen === undefined)
+    //   return <div className='App'>Please log in</div>;
     return (
       <div className='App'>
         {!navigator.onLine && (
@@ -108,12 +106,12 @@ class App extends Component {
           updateEvents={this.updateEvents}
         />
         <EventList events={this.state.events} />
-        <WelcomeScreen
+        {/* <WelcomeScreen
           showWelcomeScreen={this.state.showWelcomeScreen}
           getAccessToken={() => {
             getAccessToken();
           }}
-        />
+        /> */}
       </div>
     );
   }
