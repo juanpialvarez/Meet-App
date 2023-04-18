@@ -27,11 +27,6 @@ class App extends Component {
     const authorized = code || isTokenValid;
     const isLocal = window.location.href.indexOf("localhost") > -1;
     this.setState({ showWelcomeScreen: !authorized && !isLocal });
-    console.log(this.state.showWelcomeScreen);
-    console.log(code);
-    console.log(isTokenValid);
-    console.log(searchParams);
-    console.log(window.location.search);
     if ((authorized || isLocal) && this.mounted) {
       getEvents().then((events) => {
         const shownEvents = events.slice(0, this.state.eventCount);
