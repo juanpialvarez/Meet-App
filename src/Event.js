@@ -9,7 +9,6 @@ class Event extends Component {
     this.setState((prevState) => ({
       hide: !prevState.hide,
     }));
-    console.log(this.state.hide);
   };
 
   render() {
