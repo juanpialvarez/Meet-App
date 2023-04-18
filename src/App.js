@@ -23,9 +23,13 @@ class App extends Component {
     const accessToken = localStorage.getItem("access_token");
     const isTokenValid = (await checkToken(accessToken)).error ? false : true;
     const searchParams = new URLSearchParams(window.location.search);
-    console.log(window.location.search);
     const code = searchParams.get("code");
     this.setState({ showWelcomeScreen: !(code || isTokenValid) });
+    console.log(this.state.showWelcomeScreen);
+    console.log(code);
+    console.log(isTokenValid);
+    console.log(searchParams);
+    console.log(window.location.search);
     if ((code || isTokenValid) && this.mounted) {
       getEvents().then((events) => {
         const shownEvents = events.slice(0, this.state.eventCount);
