@@ -18,6 +18,42 @@ class App extends Component {
     showWelcomeScreen: undefined,
   };
 
+  async componentDidMount() {
+    this.mounted = true;
+    const accessToken = localStorage.getItem("access_token");
+    const isTokenValid = (await checkToken(accessToken)).error ? false : true;
+    const searchParams = new URLSearchParams(window.location.search);
+    const code = searchParams.get("code");
+    const authorized = code || isTokenValid;
+    const isLocal = window.location.href.indexOf("localhost") > -1;
+    this.setState({ showWelcomeScreen: !authorized && !isLocal });
+    console.log(this.state.showWelcomeScreen);
+    console.log(code);
+    console.log(isTokenValid);
+    console.log(searchParams);
+    console.log(window.location.search);
+    if ((authorized || isLocal) && this.mounted) {
+      getEvents().then((events) => {
+        const shownEvents = events.slice(0, this.state.eventCount);
+        if (this.mounted) {
+          this.setState({
+            events: shownEvents,
+            locations: extractLocations(events),
+          });
+        }
+      });
+    }
+    if (!navigator.onLine) {
+      this.setState({
+        errorText: "The app is using cached data",
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
   updateEvents = (location, eventCount) => {
     if (!eventCount) {
       getEvents().then((events) => {
@@ -68,43 +104,11 @@ class App extends Component {
     }
   };
 
-  async componentDidMount() {
-    this.mounted = true;
-    const accessToken = localStorage.getItem("access_token");
-    const isTokenValid = (await checkToken(accessToken)).error ? false : true;
-    const searchParams = new URLSearchParams(window.location.search);
-    const code = searchParams.get("code");
-    const authorized = code || isTokenValid;
-    const isLocal = window.location.href.indexOf("localhost") > -1;
-    this.setState({ showWelcomeScreen: !authorized && !isLocal });
-    if ((authorized || isLocal) && this.mounted) {
-      getEvents().then((events) => {
-        const shownEvents = events.slice(0, this.state.eventCount);
-        if (this.mounted) {
-          this.setState({
-            events: shownEvents,
-            locations: extractLocations(events),
-          });
-        }
-      });
-    }
-    if (!navigator.onLine) {
-      this.setState({
-        errorText: "The app is using cached data",
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    this.mounted = false;
-  }
-
   render() {
     if (this.state.showWelcomeScreen === undefined)
       return <div className='App' />;
     return (
       <div className='App'>
-        {console.log(window.location.search)}
         <ErrorAlert text={this.state.errorText} />
         <br />
         <br />
