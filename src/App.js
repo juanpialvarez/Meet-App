@@ -14,6 +14,7 @@ class App extends Component {
     locations: [],
     eventCount: 32,
     selectedCity: null,
+    errorText: "",
     showWelcomeScreen: undefined,
   };
 
@@ -33,6 +34,11 @@ class App extends Component {
             locations: extractLocations(events),
           });
         }
+      });
+    }
+    if (!navigator.onLine) {
+      this.setState({
+        errorText: "The app is using cached data",
       });
     }
   }
@@ -96,9 +102,7 @@ class App extends Component {
       return <div className='App' />;
     return (
       <div className='App'>
-        {!navigator.onLine && (
-          <ErrorAlert text='The app is using cached data' />
-        )}
+        <ErrorAlert text={this.state.errorText} />
         <br />
         <br />
         <CitySearch
