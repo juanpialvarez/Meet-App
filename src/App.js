@@ -104,6 +104,7 @@ class App extends Component {
       return <div className='App' />;
     return (
       <div className='App'>
+        {console.log(window.location.search)}
         <ErrorAlert text={this.state.errorText} />
         <br />
         <br />
