@@ -18,6 +18,8 @@ export const getAccessToken = async () => {
     }
     return code && getToken(code);
   }
+  if (accessToken || !tokenCheck.error)
+    localStorage.setItem("user logged in", "true");
   return accessToken;
 };
 
