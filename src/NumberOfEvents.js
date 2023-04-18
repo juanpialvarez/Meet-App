@@ -18,14 +18,12 @@ class NumberOfEvents extends Component {
         errorText: "",
       });
       this.props.updateEvents(this.props.selectedCity, value);
-      console.log(this.state.errorText);
     }
     if (value < 1 || value > 32) {
       this.setState({
         query: value,
         errorText: "Please enter a valid number",
       });
-      console.log(this.state.errorText);
     }
   };
 

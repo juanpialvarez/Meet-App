@@ -9,6 +9,7 @@ export const getAccessToken = async () => {
     await localStorage.removeItem("access_token");
     const searchParams = new URLSearchParams(window.location.search);
     const code = await searchParams.get("code");
+    localStorage.setItem("code", JSON.stringify(code));
     if (!code) {
       const results = await axios.get(
         "https://f4rud9gm5a.execute-api.eu-central-1.amazonaws.com/dev/api/get-auth-url"

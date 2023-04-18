@@ -7,6 +7,16 @@ import WelcomeScreen from "./WelcomeScreen";
 import { getEvents, extractLocations, getAccessToken, checkToken } from "./api";
 import "./nprogress.css";
 import { ErrorAlert } from "./Alert";
+import {
+  ScatterChart,
+  YAxis,
+  XAxis,
+  CartesianGrid,
+  Legend,
+  Scatter,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 class App extends Component {
   state = {
@@ -16,28 +26,42 @@ class App extends Component {
     selectedCity: null,
     errorText: "",
     showWelcomeScreen: undefined,
+    data: [],
+  };
+
+  getData = (locations, events) => {
+    const data = locations.map((location) => {
+      const number = events.filter(
+        (event) => event.location === location
+      ).length;
+      const city = location.split(", ").shift();
+      return { city, number };
+    });
+    return data;
   };
 
   async componentDidMount() {
     this.mounted = true;
     const accessToken = localStorage.getItem("access_token");
     const isTokenValid = (await checkToken(accessToken)).error ? false : true;
-    const searchParams = new URLSearchParams(window.location.search);
-    const code = searchParams.get("code");
+    // const searchParams = new URLSearchParams(window.location.search);
+    // const code = searchParams.get("code");
+    const code = localStorage.getItem("code");
     const authorized = code || isTokenValid;
     const isLocal = window.location.href.indexOf("localhost") > -1;
     this.setState({ showWelcomeScreen: !authorized && !isLocal });
     if ((authorized || isLocal) && this.mounted) {
       getEvents().then((events) => {
-        const shownEvents = events.slice(0, this.state.eventCount);
         if (this.mounted) {
           this.setState({
-            events: shownEvents,
+            events,
             locations: extractLocations(events),
+            data: this.getData(extractLocations(events), events),
           });
         }
       });
     }
+
     if (!navigator.onLine) {
       this.setState({
         errorText: "The app is using cached data",
@@ -116,6 +140,25 @@ class App extends Component {
           query={this.state.eventCount}
           updateEvents={this.updateEvents}
         />
+        {/* <ResponsiveContainer height={400}> */}
+        <ScatterChart
+          height={400}
+          width={800}
+          margin={{
+            top: 20,
+            right: 20,
+            bottom: 10,
+            left: 10,
+          }}
+        >
+          <CartesianGrid strokeDasharray='3 3' />
+          <XAxis dataKey='city' type='category' name='city' />
+          <YAxis dataKey='number' type='number' name='# of events' />
+          <Tooltip cursor={{ strokeDasharray: "3 3" }} />
+          <Legend />
+          <Scatter data={this.state.data} fill='#8884d8' />
+        </ScatterChart>
+        {/* </ResponsiveContainer> */}
         <EventList events={this.state.events} />
         <WelcomeScreen
           showWelcomeScreen={this.state.showWelcomeScreen}
