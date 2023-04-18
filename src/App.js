@@ -14,17 +14,12 @@ class App extends Component {
     locations: [],
     eventCount: 32,
     selectedCity: null,
-    showWelcomeScreen: undefined,
+    // showWelcomeScreen: undefined,
   };
 
   async componentDidMount() {
     this.mounted = true;
-    const accessToken = localStorage.getItem("access_token");
-    const isTokenValid = (await checkToken(accessToken)).error ? false : true;
-    const searchParams = new URLSearchParams(window.location.search);
-    const code = searchParams.get("code");
-    this.setState({ showWelcomeScreen: !(code || isTokenValid) });
-    if ((code || isTokenValid) && this.mounted) {
+    if (this.mounted) {
       getEvents().then((events) => {
         const shownEvents = events.slice(0, this.state.eventCount);
         if (this.mounted) {
@@ -36,6 +31,25 @@ class App extends Component {
       });
     }
   }
+  // async componentDidMount() {
+  //   this.mounted = true;
+  //   const accessToken = localStorage.getItem("access_token");
+  //   const isTokenValid = (await checkToken(accessToken)).error ? false : true;
+  //   const searchParams = new URLSearchParams(window.location.search);
+  //   const code = searchParams.get("code");
+  //   this.setState({ showWelcomeScreen: !(code || isTokenValid) });
+  //   if ((code || isTokenValid) && this.mounted) {
+  //     getEvents().then((events) => {
+  //       const shownEvents = events.slice(0, this.state.eventCount);
+  //       if (this.mounted) {
+  //         this.setState({
+  //           events: shownEvents,
+  //           locations: extractLocations(events),
+  //         });
+  //       }
+  //     });
+  //   }
+  // }
 
   componentWillUnmount() {
     this.mounted = false;
@@ -92,8 +106,8 @@ class App extends Component {
   };
 
   render() {
-    if (this.state.showWelcomeScreen === undefined)
-      return <div className='App' />;
+    // if (this.state.showWelcomeScreen === undefined)
+    //   return <div className='App' />;
     return (
       <div className='App'>
         {!navigator.onLine && (
@@ -111,12 +125,12 @@ class App extends Component {
           updateEvents={this.updateEvents}
         />
         <EventList events={this.state.events} />
-        <WelcomeScreen
+        {/* <WelcomeScreen
           showWelcomeScreen={this.state.showWelcomeScreen}
           getAccessToken={() => {
             getAccessToken();
           }}
-        />
+        /> */}
       </div>
     );
   }
