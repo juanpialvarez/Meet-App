@@ -17,10 +17,12 @@ import {
   Tooltip,
   // ResponsiveContainer,
 } from "recharts";
+import EventGenre from "./EventGenre";
 
 class App extends Component {
   state = {
     events: [],
+    eventData: [],
     locations: [],
     eventCount: 32,
     selectedCity: null,
@@ -44,9 +46,10 @@ class App extends Component {
     this.mounted = true;
     const accessToken = localStorage.getItem("access_token");
     const isTokenValid = (await checkToken(accessToken)).error ? false : true;
-    // const searchParams = new URLSearchParams(window.location.search);
-    // const code = searchParams.get("code");
-    const code = localStorage.getItem("code");
+    const searchParams = new URLSearchParams(window.location.search);
+    const code = searchParams.get("code");
+    // let code = localStorage.getItem("code");
+    // code = JSON.parse(code);
     const authorized = code || isTokenValid;
     const isLocal = window.location.href.indexOf("localhost") > -1;
     this.setState({ showWelcomeScreen: !authorized && !isLocal });
@@ -54,7 +57,8 @@ class App extends Component {
       getEvents().then((events) => {
         if (this.mounted) {
           this.setState({
-            events,
+            events: events,
+            eventData: events,
             locations: extractLocations(events),
             data: this.getData(extractLocations(events), events),
           });
@@ -140,25 +144,28 @@ class App extends Component {
           query={this.state.eventCount}
           updateEvents={this.updateEvents}
         />
-        {/* <ResponsiveContainer height={400}> */}
-        <ScatterChart
-          height={400}
-          width={800}
-          margin={{
-            top: 20,
-            right: 20,
-            bottom: 10,
-            left: 10,
-          }}
-        >
-          <CartesianGrid strokeDasharray='3 3' />
-          <XAxis dataKey='city' type='category' name='city' />
-          <YAxis dataKey='number' type='number' name='# of events' />
-          <Tooltip cursor={{ strokeDasharray: "3 3" }} />
-          <Legend />
-          <Scatter data={this.state.data} fill='#8884d8' />
-        </ScatterChart>
-        {/* </ResponsiveContainer> */}
+        <div>
+          <EventGenre events={this.state.eventData} />
+          {/* <ResponsiveContainer height={400}> */}
+          <ScatterChart
+            height={400}
+            width={800}
+            margin={{
+              top: 20,
+              right: 20,
+              bottom: 10,
+              left: 10,
+            }}
+          >
+            <CartesianGrid strokeDasharray='3 3' />
+            <XAxis dataKey='city' type='category' name='city' />
+            <YAxis dataKey='number' type='number' name='# of events' />
+            <Tooltip cursor={{ strokeDasharray: "3 3" }} />
+            <Legend />
+            <Scatter data={this.state.data} fill='#8884d8' />
+          </ScatterChart>
+          {/* </ResponsiveContainer> */}
+        </div>
         <EventList events={this.state.events} />
         <WelcomeScreen
           showWelcomeScreen={this.state.showWelcomeScreen}
