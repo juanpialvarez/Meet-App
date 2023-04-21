@@ -144,7 +144,6 @@ class App extends Component {
         />
         <div>
           <EventGenre events={this.state.eventData} />
-          {/* <ResponsiveContainer> */}
           <ScatterChart
             height={400}
             width={800}
@@ -162,7 +161,6 @@ class App extends Component {
             <Legend />
             <Scatter data={this.state.data} fill='#8884d8' />
           </ScatterChart>
-          {/* </ResponsiveContainer> */}
         </div>
         <EventList events={this.state.events} />
         <WelcomeScreen
