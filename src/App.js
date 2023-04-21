@@ -48,8 +48,6 @@ class App extends Component {
     const isTokenValid = (await checkToken(accessToken)).error ? false : true;
     const searchParams = new URLSearchParams(window.location.search);
     const code = searchParams.get("code");
-    // let code = localStorage.getItem("code");
-    // code = JSON.parse(code);
     const authorized = code || isTokenValid;
     const isLocal = window.location.href.indexOf("localhost") > -1;
     this.setState({ showWelcomeScreen: !authorized && !isLocal });
@@ -146,7 +144,7 @@ class App extends Component {
         />
         <div>
           <EventGenre events={this.state.eventData} />
-          {/* <ResponsiveContainer height={400}> */}
+          {/* <ResponsiveContainer> */}
           <ScatterChart
             height={400}
             width={800}
