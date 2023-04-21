@@ -96,7 +96,7 @@ const getToken = async (code) => {
     access_token && localStorage.setItem("access_token", access_token);
     return access_token;
   } catch (error) {
-    error.json();
+    throw new Error("Failed to get token");
   }
 };
 
